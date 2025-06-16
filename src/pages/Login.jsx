@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext"; // importe seu hook do contexto
 
-const Login = ({ setUser }) => {
+const Login = () => {
+  const { setUser } = useUserContext(); // pega setUser do contexto
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const Login = ({ setUser }) => {
 
         navigate("/");
       } catch (error) {
-        alert(`Deu um erro ao logar: ${error.response.data}`);
+        alert(`Deu um erro ao logar: ${error.response?.data || error.message}`);
       }
     } else {
       alert("Preencha todos os campos");
@@ -52,7 +54,7 @@ const Login = ({ setUser }) => {
           </button>
         </form>
         <p>
-          Ainda não tem conta?
+          Ainda não tem conta?{" "}
           <Link to="/register" className="font-semibold underline">
             Registre-se aqui!
           </Link>

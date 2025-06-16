@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext";
 
-const Register = ({ setUser }) => {
+const Register = () => {
+  const { setUser } = useUserContext();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,14 +15,14 @@ const Register = ({ setUser }) => {
 
     if (name && email && password) {
       try {
-        const { data } = await axios.post("/register", {
+        const { data } = await axios.post("/users", {
           name,
           email,
           password,
         });
 
         setUser(data.user);
-        navigate("/");
+        navigate("/login");
       } catch (error) {
         alert(`Erro ao registrar: ${error.response?.data || error.message}`);
       }
