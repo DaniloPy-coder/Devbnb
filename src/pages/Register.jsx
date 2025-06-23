@@ -15,7 +15,7 @@ const Register = () => {
 
     if (name && email && password) {
       try {
-        const { data } = await axios.post("/users", {
+        const { data } = await axios.post("http://localhost:3333/users", {
           name,
           email,
           password,

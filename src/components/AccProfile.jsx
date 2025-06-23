@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { UserContext, useUserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const AccProfile = () => {
   const { user, setUser } = useUserContext();
@@ -9,8 +9,8 @@ const AccProfile = () => {
 
   const logout = async () => {
     try {
-      const { data } = await axios.post("/logout");
-      console.log(data);
+      await axios.post("/logout");
+      setUser(null);
       setRedirect(true);
     } catch (error) {
       alert("Erro ao fazer logout");
@@ -19,7 +19,7 @@ const AccProfile = () => {
 
   if (redirect) return <Navigate to="/" />;
 
-  if (!user) return <></>;
+  if (!user) return null;
 
   return (
     <div className="flex flex-col items-center gap-4">

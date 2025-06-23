@@ -1,9 +1,16 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext";
 import AccProfile from "../components/AccProfile";
+import AccPlaces from "../components/AccPlaces";
 
 const Account = () => {
   const { subpage } = useParams();
+  const { user } = useUserContext();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   const buttonClass = (button) => {
     let finalClass =
@@ -30,8 +37,7 @@ const Account = () => {
         </div>
 
         {subpage === "profile" && <AccProfile />}
-        {subpage === "bookings" && <div>Reservas do usuário</div>}
-        {subpage === "places" && <div>Lugares do usuário</div>}
+        {subpage === "places" && <AccPlaces />}
       </div>
     </section>
   );

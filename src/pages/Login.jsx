@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserContext } from "../contexts/UserContext"; // importe seu hook do contexto
+import { useUserContext } from "../contexts/UserContext";
 
 const Login = () => {
-  const { setUser } = useUserContext(); // pega setUser do contexto
+  const { setUser } = useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,20 +12,21 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email && password) {
-      try {
-        const { data } = await axios.post("/login", {
-          email,
-          password,
-        });
-        setUser(data.user);
+    if (!email || !password) {
+      return alert("Preencha todos os campos");
+    }
 
-        navigate("/");
-      } catch (error) {
-        alert(`Deu um erro ao logar: ${error.response?.data || error.message}`);
-      }
-    } else {
-      alert("Preencha todos os campos");
+    try {
+      const { data } = await axios.post("/login", { email, password });
+
+      setUser({
+        ...data.user,
+        token: data.token,
+      });
+
+      navigate("/");
+    } catch (error) {
+      alert(`Erro ao logar: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -37,26 +38,27 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
           <input
             type="email"
-            className="w-full rounded-full border border-gray-300 px-4 py-2"
             placeholder="Digite seu e-mail"
+            className="w-full rounded-full border px-4 py-2"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            className="w-full rounded-full border border-gray-300 px-4 py-2"
             placeholder="Digite sua senha"
+            className="w-full rounded-full border px-4 py-2"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="bg-primary-400 w-full cursor-pointer rounded-full border border-gray-300 px-4 py-2 font-bold text-white">
+          <button className="bg-primary-400 cursor-pointer rounded-full py-2 text-white">
             Login
           </button>
         </form>
+
         <p>
           Ainda não tem conta?{" "}
           <Link to="/register" className="font-semibold underline">
-            Registre-se aqui!
+            Registre-se
           </Link>
         </p>
       </div>
