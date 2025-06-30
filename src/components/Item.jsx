@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 const Item = ({ place }) => {
   const firstPhoto = place.photos?.[0];
   const photoUrl = firstPhoto
-    ? `http://localhost:3333/files/${firstPhoto}`
+    ? firstPhoto.startsWith("http")
+      ? firstPhoto
+      : `http://localhost:3333/files/${firstPhoto}`
     : "/placeholder.jpg";
 
   return (

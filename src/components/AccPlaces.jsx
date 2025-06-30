@@ -49,7 +49,7 @@ const AccPlaces = () => {
               >
                 <img
                   className="aspect-square max-w-56 rounded-2xl bg-gray-100 p-6"
-                  src={`/files/${place.photos[0]}`}
+                  src={place.photos[0]}
                   alt="Foto da Acomodação"
                 />
 

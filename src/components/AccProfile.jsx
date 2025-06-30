@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const AccProfile = () => {
   const { user, setUser } = useUserContext();
@@ -11,9 +12,10 @@ const AccProfile = () => {
     try {
       await axios.post("/logout");
       setUser(null);
+      toast.success("Deslogado com sucesso");
       setRedirect(true);
     } catch (error) {
-      alert("Erro ao fazer logout");
+      toast.error("Erro ao deslogar");
     }
   };
 

@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../contexts/UserContext";
 import PhotoUploader from "./PhotoUploader";
+import { toast } from "react-toastify";
 
 const NewPlace = () => {
   const { id } = useParams();
@@ -43,6 +44,7 @@ const NewPlace = () => {
           console.error("Erro ao buscar place:", error);
         }
       };
+
       fetchPlace();
     }
   }, [id]);
@@ -60,7 +62,7 @@ const NewPlace = () => {
       !checkout ||
       !guests
     ) {
-      alert("Preencha todos os campos antes de continuar");
+      toast.error("Por favor, preencha todos os campos.");
       return;
     }
 
@@ -70,37 +72,47 @@ const NewPlace = () => {
       formData.append("city", city);
       formData.append("checkin", checkin);
       formData.append("checkout", checkout);
-      formData.append("guests", guests);
-      formData.append("price", price);
+      formData.append("price", Number(price));
+      formData.append("guests", Number(guests));
       formData.append("description", description);
       formData.append("extras", extras);
-      formData.append("perks", JSON.stringify(perks));
       formData.append("userId", user.id);
 
-      photos.forEach((photo) => {
-        formData.append("photos", photo);
-      });
+      perks.forEach((perk) => formData.append("perks", perk));
+
+      // Fotos antigas
+      photos
+        .filter((p) => typeof p === "string")
+        .forEach((photoName) => formData.append("oldPhotos", photoName));
+
+      // Fotos novas
+      photos
+        .filter((p) => typeof p !== "string")
+        .forEach((photo) => formData.append("photos", photo));
 
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${user.token}`,
         },
       };
 
-      const response = id
-        ? await axios.put(`/places/${id}`, formData, config)
-        : await axios.post("/places", formData, config);
-
-      console.log(response.data);
+      if (id) {
+        await axios.put(`/places/${id}`, formData, config);
+        toast.success("Anúncio atualizado com sucesso!");
+      } else {
+        await axios.post("/places", formData, config);
+        toast.success("Anúncio criado com sucesso!");
+      }
       setRedirect(true);
     } catch (error) {
       console.error(error);
-      alert(id ? "Erro ao atualizar anúncio" : "Erro ao cadastrar anúncio");
+      toast.error(
+        id ? "Erro ao cadastrar anúncio" : "Por favor, tente novamente.",
+      );
     }
   };
 
-  if (redirect) return <Navigate to="/acccount/places" />;
+  if (redirect) return <Navigate to="/account/places" />;
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-6 px-8">
