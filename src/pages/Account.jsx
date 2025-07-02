@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import AccProfile from "../components/AccProfile";
