@@ -11,7 +11,9 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const apiBaseUrl =
+    import.meta.env.VITE_AXIOS_BASE_URL?.replace(/\/$/, "") ||
+    "http://localhost:3333";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
