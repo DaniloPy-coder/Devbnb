@@ -27,7 +27,7 @@ const Register = () => {
         });
 
         setUser(data.user);
-        navigate("/login");
+        navigate("/");
       } catch (error) {
         toast.error(error.response.data.message);
       }

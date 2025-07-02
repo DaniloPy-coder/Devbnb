@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { setUser } = useUserContext();
@@ -13,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      return alert("Preencha todos os campos");
+      return toast.error("Preencha todos os campos");
     }
 
     try {
@@ -26,7 +27,7 @@ const Login = () => {
 
       navigate("/");
     } catch (error) {
-      alert(`Erro ao logar: ${error.response?.data?.message || error.message}`);
+      toast.error(error.response.data.message);
     }
   };
 
