@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import Item from "../components/Item";
 import axios from "axios";
+import { toast } from "react-toastify";
+
+const apiBaseUrl =
+  import.meta.env.VITE_AXIOS_BASE_URL?.replace(/\/$/, "") ||
+  "http://localhost:3333";
 
 const Home = () => {
   const [places, setPlaces] = useState([]);
@@ -8,11 +13,11 @@ const Home = () => {
   useEffect(() => {
     const axiosGet = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3333/places");
+        const { data } = await axios.get(`${apiBaseUrl}/places`);
         console.log("Places recebidos:", data);
         setPlaces(data);
       } catch (error) {
-        console.error("Erro ao carregar places:", error);
+        toast.error(error.response.data.message);
       }
     };
     axiosGet();

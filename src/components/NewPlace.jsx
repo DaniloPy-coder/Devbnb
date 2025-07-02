@@ -6,6 +6,10 @@ import { useUserContext } from "../contexts/UserContext";
 import PhotoUploader from "./PhotoUploader";
 import { toast } from "react-toastify";
 
+const apiBaseUrl =
+  import.meta.env.VITE_AXIOS_BASE_URL?.replace(/\/$/, "") ||
+  "http://localhost:3333";
+
 const NewPlace = () => {
   const { id } = useParams();
   const { user } = useUserContext();
@@ -25,7 +29,7 @@ const NewPlace = () => {
     if (id) {
       const fetchPlace = async () => {
         try {
-          const { data } = await axios.get(`/places/${id}`);
+          const { data } = await axios.get(`${apiBaseUrl}/places/${id}`);
           setTitle(data.title || "");
           setCity(data.city || "");
           setPhotos(data.photos || []);
@@ -97,10 +101,10 @@ const NewPlace = () => {
       };
 
       if (id) {
-        await axios.put(`/places/${id}`, formData, config);
+        await axios.put(`${apiBaseUrl}/places/${id}`, formData, config);
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await axios.post("/places", formData, config);
+        await axios.post(`${apiBaseUrl}/places`, formData, config);
         toast.success("Anúncio criado com sucesso!");
       }
       setRedirect(true);

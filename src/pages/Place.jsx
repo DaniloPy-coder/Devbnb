@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import Perk from "../components/Perk";
 import Booking from "../components/Booking";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
 
 const Place = () => {
   const { id } = useParams();
@@ -31,7 +31,7 @@ const Place = () => {
     if (id && user) {
       const checkUserBooking = async () => {
         try {
-          const { data } = await axios.get(`/bookings/user/${user.id}`);
+          const { data } = await api.get(`/bookings/user/${user.id}`);
           const hasBooking = data.find((b) => b.placeId === id);
           setAlreadyBooked(!!hasBooking);
           setBooking(hasBooking || null);
@@ -47,7 +47,7 @@ const Place = () => {
     if (id) {
       const fetchPlace = async () => {
         try {
-          const { data } = await axios.get(`/places/${id}`);
+          const { data } = await api.get(`/places/${id}`);
           setPlace(data);
         } catch (error) {
           console.error("Erro ao buscar lugar:", error);
@@ -99,7 +99,7 @@ const Place = () => {
         guests: Number(guests),
       };
 
-      const { data } = await axios.post("/bookings", objBooking);
+      const { data } = await api.post("/bookings", objBooking);
       setBooking(data);
       toast.success("Reserva realizada com sucesso.");
       setRedirect(true);
@@ -121,7 +121,7 @@ const Place = () => {
     if (!booking) return;
 
     try {
-      await axios.delete(`/bookings/${booking.id}`);
+      await api.delete(`/bookings/${booking.id}`);
       alert("Reserva cancelada com sucesso.");
       setBooking(null);
       setAlreadyBooked(false);
