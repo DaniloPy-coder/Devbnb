@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { setUser } = useUserContext();
@@ -10,12 +11,14 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (name && email && password) {
       try {
-        const { data } = await axios.post("http://localhost:3333/users", {
+        const { data } = await axios.post(`${apiBaseUrl}/users`, {
           name,
           email,
           password,
@@ -24,10 +27,10 @@ const Register = () => {
         setUser(data.user);
         navigate("/login");
       } catch (error) {
-        alert(`Erro ao registrar: ${error.response?.data || error.message}`);
+        toast.error(error.response.data.message);
       }
     } else {
-      alert("Preencha todos os campos");
+      toast.error("Preencha todos os campos");
     }
   };
 
