@@ -6,10 +6,11 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
       toast.error("Você precisa estar logado para fazer upload de fotos.");
       return;
     }
+
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
-    const uploadedUrls = [];
+    let uploadedUrls = [];
 
     for (const file of files) {
       const formData = new FormData();
@@ -35,13 +36,15 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
         const validUrls = (data.files || [])
           .filter((f) => f && typeof f === "string" && f.trim() !== "")
           .map((f) => `https://backend-devbnb.vercel.app/files/${f}`);
-        uploadedUrls.push(...validUrls);
+
+        uploadedUrls = [...uploadedUrls, ...validUrls];
       } catch (err) {
         console.error("Erro no upload:", err);
         toast.error("Erro no upload da imagem.");
       }
     }
 
+    console.log("Final uploadedUrls:", uploadedUrls);
     setPhotos((prev) => [...prev, ...uploadedUrls]);
   };
 
