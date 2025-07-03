@@ -30,7 +30,12 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
         }
 
         const data = await res.json();
-        uploadedUrls.push(...data.files.map((f) => f));
+        console.log("Upload response:", data);
+
+        const validUrls = (data.files || []).filter(
+          (f) => f && typeof f === "string" && f.trim() !== "",
+        );
+        uploadedUrls.push(...validUrls);
       } catch (err) {
         console.error("Erro no upload:", err);
         toast.error("Erro no upload da imagem.");
