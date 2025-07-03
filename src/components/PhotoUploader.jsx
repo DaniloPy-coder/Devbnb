@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-const PhotoUploader = ({ photos, setPhotos }) => {
+const PhotoUploader = ({ photos, setPhotos, token }) => {
   const [previews, setPreviews] = useState([]);
 
   const handleFileChange = async (e) => {
@@ -12,18 +12,21 @@ const PhotoUploader = ({ photos, setPhotos }) => {
 
     for (const file of files) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("photos", file);
 
       try {
         const res = await fetch("https://backend-devbnb.vercel.app/upload", {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (!res.ok) throw new toast.error("Erro no upload da imagem.");
 
         const data = await res.json();
-        uploadedUrls.push(data.url);
+        uploadedUrls.push(...data.files.map((f) => f));
       } catch (err) {
         console.error("Erro no upload:", err);
         toast.error("Erro no upload da imagem.");
