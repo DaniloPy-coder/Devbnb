@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const PhotoUploader = ({ photos, setPhotos, token }) => {
-  const [previews, setPreviews] = useState([]);
-
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -52,10 +49,6 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
     setPhotos(updated);
   };
 
-  useEffect(() => {
-    setPreviews(photos);
-  }, [photos]);
-
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor="photos" className="ml-2 text-2xl font-bold">
@@ -92,9 +85,9 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
           Upload
         </label>
 
-        {previews.map((url, idx) => (
+        {photos.map((url, idx) => (
           <div
-            key={idx}
+            key={url}
             className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
           >
             <img
