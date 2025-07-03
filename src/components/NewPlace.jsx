@@ -152,7 +152,11 @@ const NewPlace = () => {
         />
       </div>
 
-      <PhotoUploader photos={photos} user={user?.token} setPhotos={setPhotos} />
+      <PhotoUploader
+        photos={photos}
+        token={user?.token}
+        setPhotos={setPhotos}
+      />
 
       <div className="flex flex-col gap-1">
         <label htmlFor="description" className="ml-2 text-2xl font-bold">
