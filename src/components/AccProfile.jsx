@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
 
 const AccProfile = () => {
   const { user, setUser } = useUserContext();
@@ -10,7 +10,7 @@ const AccProfile = () => {
 
   const logout = async () => {
     try {
-      await axios.post("/logout");
+      await api.post("/logout");
       setUser(null);
       toast.success("Deslogado com sucesso");
       setRedirect(true);

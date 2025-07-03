@@ -1,6 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import axios from "axios";
-
 import { UserContextProvider } from "./contexts/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -9,9 +7,10 @@ import Place from "./pages/Place";
 import Account from "./pages/Account";
 import Header from "./components/Header";
 import { ToastContainer } from "react-toastify";
+import { api } from "./services/api";
 
-axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL;
-axios.defaults.withCredentials = true;
+api.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL;
+api.defaults.withCredentials = true;
 
 function App() {
   return (

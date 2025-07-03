@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NewPlace from "./NewPlace";
-import axios from "axios";
+import { api } from "../services/api";
 
 const AccPlaces = () => {
   const { action } = useParams();
@@ -9,7 +9,7 @@ const AccPlaces = () => {
 
   useEffect(() => {
     const axiosGet = async () => {
-      const { data } = await axios.get("/user/places");
+      const { data } = await api.get("/user/places");
       setPlaces(data);
     };
     axiosGet();

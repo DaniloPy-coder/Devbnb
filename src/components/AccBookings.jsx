@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useUserContext } from "../contexts/UserContext"; // importe o contexto
+import { useUserContext } from "../contexts/UserContext";
 import Booking from "./Booking";
+import { api } from "../services/api";
 
 const AccBookings = () => {
   const { user } = useUserContext();
@@ -9,9 +9,9 @@ const AccBookings = () => {
 
   useEffect(() => {
     if (!user) return;
-    const axiosGet = async () => {
+    const apiGet = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await api.get(
           `http://localhost:3333/bookings/user/${user.id}`,
         );
         setBookings(data);
@@ -19,7 +19,7 @@ const AccBookings = () => {
         console.error("Erro ao buscar reservas:", error);
       }
     };
-    axiosGet();
+    apiGet();
   }, [user]);
 
   if (!user) {

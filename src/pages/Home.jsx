@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "../components/Item";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
 
 const apiBaseUrl =
   import.meta.env.VITE_AXIOS_BASE_URL?.replace(/\/$/, "") ||
@@ -11,16 +11,16 @@ const Home = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    const axiosGet = async () => {
+    const apiGet = async () => {
       try {
-        const { data } = await axios.get(`${apiBaseUrl}/places`);
+        const { data } = await api.get(`${apiBaseUrl}/places`);
         console.log("Places recebidos:", data);
         setPlaces(data);
       } catch (error) {
         toast.error(error.response.data.message);
       }
     };
-    axiosGet();
+    apiGet();
   }, []);
   return (
     <section>

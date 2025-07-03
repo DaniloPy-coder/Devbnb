@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Perks from "./Perks";
 import { Navigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { api } from "../services/api";
 import { useUserContext } from "../contexts/UserContext";
 import PhotoUploader from "./PhotoUploader";
 import { toast } from "react-toastify";
@@ -29,7 +29,7 @@ const NewPlace = () => {
     if (id) {
       const fetchPlace = async () => {
         try {
-          const { data } = await axios.get(`${apiBaseUrl}/places/${id}`);
+          const { data } = await api.get(`${apiBaseUrl}/places/${id}`);
           setTitle(data.title || "");
           setCity(data.city || "");
           setPhotos(data.photos || []);
@@ -101,10 +101,10 @@ const NewPlace = () => {
       };
 
       if (id) {
-        await axios.put(`${apiBaseUrl}/places/${id}`, formData, config);
+        await api.put(`${apiBaseUrl}/places/${id}`, formData, config);
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await axios.post(`${apiBaseUrl}/places`, formData, config);
+        await api.post(`${apiBaseUrl}/places`, formData, config);
         toast.success("Anúncio criado com sucesso!");
       }
       setRedirect(true);
