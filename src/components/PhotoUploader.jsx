@@ -95,7 +95,11 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
             className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
           >
             <img
-              src={url}
+              src={
+                url.startsWith("http")
+                  ? url
+                  : `https://backend-devbnb.vercel.app/uploads/${url}`
+              }
               alt={`Foto ${idx}`}
               className="h-full w-full object-cover"
             />
