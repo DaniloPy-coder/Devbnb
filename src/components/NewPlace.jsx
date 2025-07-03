@@ -26,10 +26,14 @@ const NewPlace = () => {
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
-    if (id) {
+    if (id && user?.token) {
       const fetchPlace = async () => {
         try {
-          const { data } = await api.get(`${apiBaseUrl}/places/${id}`);
+          const { data } = await api.get(`${apiBaseUrl}/places/${id}`, {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
           setTitle(data.title || "");
           setCity(data.city || "");
           setPhotos(data.photos || []);
@@ -51,7 +55,7 @@ const NewPlace = () => {
 
       fetchPlace();
     }
-  }, [id]);
+  }, [id, user?.token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

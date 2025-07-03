@@ -23,7 +23,10 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
           },
         });
 
-        if (!res.ok) throw new toast.error("Erro no upload da imagem.");
+        if (!res.ok) {
+          toast.error("Erro no upload da imagem.");
+          throw new Error("Erro no upload da imagem.");
+        }
 
         const data = await res.json();
         uploadedUrls.push(...data.files.map((f) => f));
