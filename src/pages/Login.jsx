@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
+import { useState } from "react";
 
 const Login = () => {
   const { setUser } = useUserContext();
@@ -18,7 +18,7 @@ const Login = () => {
     }
 
     try {
-      const { data } = await axios.post("/login", { email, password });
+      const { data } = await api.post("/login", { email, password });
 
       setUser({
         ...data.user,

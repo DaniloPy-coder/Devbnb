@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
+import { api } from "../services/api";
 
 const Register = () => {
   const { setUser } = useUserContext();
@@ -20,7 +20,7 @@ const Register = () => {
 
     if (name && email && password) {
       try {
-        const { data } = await axios.post(`${apiBaseUrl}/users`, {
+        const { data } = await api.post(`${apiBaseUrl}/users`, {
           name,
           email,
           password,
