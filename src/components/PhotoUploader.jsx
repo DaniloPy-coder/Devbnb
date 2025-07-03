@@ -53,6 +53,8 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
     setPhotos(updated);
   };
 
+  console.log("Photos:", photos); // Debug: Veja no console o que está vindo
+
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor="photos" className="ml-2 text-2xl font-bold">
@@ -89,36 +91,40 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
           Upload
         </label>
 
-        {photos.map((url, idx) => (
-          <div
-            key={url}
-            className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
-          >
-            <img
-              src={
-                typeof url === "string" && url.startsWith("http")
-                  ? url
-                  : `https://backend-devbnb.vercel.app/uploads/${url}`
-              }
-              alt={`Foto ${idx}`}
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute right-2 bottom-2 flex gap-1">
+        {photos
+          .filter((url) => typeof url === "string" && url)
+          .map((url, idx) => {
+            const src = url.startsWith("http")
+              ? url
+              : `https://backend-devbnb.vercel.app/uploads/${url}`;
+
+            return (
               <div
-                onClick={() => promotePhoto(idx)}
-                className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
+                key={url + idx}
+                className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
               >
-                ⭐
+                <img
+                  src={src}
+                  alt={`Foto ${idx}`}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute right-2 bottom-2 flex gap-1">
+                  <div
+                    onClick={() => promotePhoto(idx)}
+                    className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
+                  >
+                    ⭐
+                  </div>
+                  <div
+                    onClick={() => deletePhoto(idx)}
+                    className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
+                  >
+                    ❌
+                  </div>
+                </div>
               </div>
-              <div
-                onClick={() => deletePhoto(idx)}
-                className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
-              >
-                ❌
-              </div>
-            </div>
-          </div>
-        ))}
+            );
+          })}
       </div>
     </div>
   );
