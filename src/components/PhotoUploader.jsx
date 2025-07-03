@@ -96,7 +96,7 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
           >
             <img
               src={
-                url.startsWith("http")
+                typeof url === "string" && url.startsWith("http")
                   ? url
                   : `https://backend-devbnb.vercel.app/uploads/${url}`
               }
