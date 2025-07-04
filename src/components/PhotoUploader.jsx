@@ -98,9 +98,7 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
         {photos
           .filter((url) => typeof url === "string" && url)
           .map((url, idx) => {
-            const src = url.startsWith("http")
-              ? url
-              : `https://backend-devbnb.vercel.app/files/${url}`;
+            const src = url;
 
             return (
               <div
