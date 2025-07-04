@@ -76,41 +76,38 @@ const NewPlace = () => {
 
     try {
       const formData = new FormData();
-
       formData.append("title", title);
       formData.append("city", city);
       formData.append("checkin", checkin);
       formData.append("checkout", checkout);
-      formData.append("price", price);
       formData.append("guests", guests);
+      formData.append("price", price);
       formData.append("description", description);
-      formData.append("extras", extras);
-      formData.append("userId", user.id);
+      formData.append("extras", extras || "");
+      formData.append("perks", JSON.stringify(perks));
 
-      perks.forEach((perk) => formData.append("perks", perk));
-
-      photos.forEach((photo) => {
-        if (typeof photo === "string") {
-          // URL da foto antiga
-          formData.append("oldPhotos", photo);
-        } else {
-          // Arquivo novo (ex: File)
-          formData.append("photos", photo);
-        }
+      // Supondo que PhotoUploader passe os arquivos reais (ajuste o componente se necessário)
+      photos.forEach((file) => {
+        formData.append("files", file);
       });
 
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, formData, config);
+        await api.put(`${apiBaseUrl}/places/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+          withCredentials: true,
+        });
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await api.post(`${apiBaseUrl}/places`, formData, config);
+        await api.post(`${apiBaseUrl}/places`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+          withCredentials: true,
+        });
         toast.success("Anúncio criado com sucesso!");
       }
 
