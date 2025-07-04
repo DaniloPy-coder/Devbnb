@@ -14,7 +14,9 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
 
     for (const file of files) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("photos", file);
+      console.log("Token:", token);
+      console.log("Enviando formData:", formData.get("photos"));
 
       try {
         const res = await fetch("https://backend-devbnb.vercel.app/upload", {
@@ -31,6 +33,7 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
         }
 
         const data = await res.json();
+        console.log("Upload response:", data);
 
         const validUrls = (data.files || [])
           .filter((f) => f && typeof f === "string" && f.trim() !== "")
@@ -59,6 +62,8 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
     updated.unshift(chosen);
     setPhotos(updated);
   };
+
+  console.log("Photos:", photos); // Debug: Veja no console o que está vindo
 
   return (
     <div className="flex flex-col gap-1">
