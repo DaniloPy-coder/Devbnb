@@ -32,9 +32,9 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
 
         const data = await res.json();
 
-        const validUrls = (data.files || [])
-          .filter((f) => f && typeof f === "string" && f.trim() !== "")
-          .map((f) => `https://backend-devbnb.vercel.app/files/${f}`);
+        const validUrls = (data.files || []).filter(
+          (f) => f && typeof f === "string" && f.trim() !== "",
+        );
 
         uploadedUrls = [...uploadedUrls, ...validUrls];
       } catch (err) {
