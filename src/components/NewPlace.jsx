@@ -49,7 +49,7 @@ const NewPlace = () => {
           setPrice(data.price || "");
           setExtras(data.extras || "");
         } catch (error) {
-          console.error("Erro ao buscar place:", error);
+          toast.error(error.response.data.message);
         }
       };
 
@@ -75,28 +75,19 @@ const NewPlace = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("city", city);
-      formData.append("checkin", checkin);
-      formData.append("checkout", checkout);
-      formData.append("price", Number(price));
-      formData.append("guests", Number(guests));
-      formData.append("description", description);
-      formData.append("extras", extras);
-      formData.append("userId", user.id);
-
-      perks.forEach((perk) => formData.append("perks", perk));
-
-      // Fotos antigas
-      photos
-        .filter((p) => typeof p === "string")
-        .forEach((photoName) => formData.append("oldPhotos", photoName));
-
-      // Fotos novas
-      photos
-        .filter((p) => typeof p !== "string")
-        .forEach((photo) => formData.append("photos", photo));
+      const placeData = {
+        title,
+        city,
+        checkin,
+        checkout,
+        price: Number(price),
+        guests: Number(guests),
+        description,
+        extras,
+        perks,
+        photos,
+        userId: user.id,
+      };
 
       const config = {
         headers: {
@@ -105,17 +96,19 @@ const NewPlace = () => {
       };
 
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, formData, config);
+        await api.put(`${apiBaseUrl}/places/${id}`, placeData, config);
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await api.post(`${apiBaseUrl}/places`, formData, config);
+        await api.post(`${apiBaseUrl}/places`, placeData, config);
         toast.success("Anúncio criado com sucesso!");
       }
       setRedirect(true);
     } catch (error) {
       console.error(error);
       toast.error(
-        id ? "Erro ao cadastrar anúncio" : "Por favor, tente novamente.",
+        id
+          ? "Erro ao atualizar anúncio"
+          : "Erro ao criar anúncio, tente novamente.",
       );
     }
   };
