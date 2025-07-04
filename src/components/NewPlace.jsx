@@ -75,31 +75,34 @@ const NewPlace = () => {
     }
 
     try {
-      const payload = {
-        title,
-        city,
-        checkin,
-        checkout,
-        guests,
-        price,
-        description,
-        extras,
-        perks,
-        photos, // aqui, o array de URLs das fotos
-      };
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("city", city);
+      formData.append("checkin", checkin);
+      formData.append("checkout", checkout);
+      formData.append("guests", guests);
+      formData.append("price", price);
+      formData.append("description", description);
+      formData.append("extras", extras || "");
+      formData.append("perks", JSON.stringify(perks));
+      formData.append("photos", JSON.stringify(photos)); // <== aqui enviando URLs serializadas
 
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, payload, {
+        await api.put(`${apiBaseUrl}/places/${id}`, formData, {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
+          withCredentials: true,
         });
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await api.post(`${apiBaseUrl}/places`, payload, {
+        await api.post(`${apiBaseUrl}/places`, formData, {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
+          withCredentials: true,
         });
         toast.success("Anúncio criado com sucesso!");
       }
