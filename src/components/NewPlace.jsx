@@ -75,41 +75,49 @@ const NewPlace = () => {
     }
 
     try {
-      const placeData = {
-        title,
-        city,
-        checkin,
-        checkout,
-        price: Number(price),
-        guests: Number(guests),
-        description,
-        extras,
-        perks,
-        photos,
-        userId: user.id,
-      };
+      const formData = new FormData();
+
+      formData.append("title", title);
+      formData.append("city", city);
+      formData.append("checkin", checkin);
+      formData.append("checkout", checkout);
+      formData.append("price", price);
+      formData.append("guests", guests);
+      formData.append("description", description);
+      formData.append("extras", extras);
+      formData.append("userId", user.id);
+
+      perks.forEach((perk) => formData.append("perks", perk));
+
+      photos.forEach((photo) => {
+        if (typeof photo === "string") {
+          // URL da foto antiga
+          formData.append("oldPhotos", photo);
+        } else {
+          // Arquivo novo (ex: File)
+          formData.append("photos", photo);
+        }
+      });
 
       const config = {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${user.token}`,
         },
       };
 
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, placeData, config);
+        await api.put(`${apiBaseUrl}/places/${id}`, formData, config);
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await api.post(`${apiBaseUrl}/places`, placeData, config);
+        await api.post(`${apiBaseUrl}/places`, formData, config);
         toast.success("Anúncio criado com sucesso!");
       }
+
       setRedirect(true);
     } catch (error) {
       console.error(error);
-      toast.error(
-        id
-          ? "Erro ao atualizar anúncio"
-          : "Erro ao criar anúncio, tente novamente.",
-      );
+      toast.error(id ? "Erro ao atualizar anúncio" : "Erro ao criar anúncio.");
     }
   };
 
