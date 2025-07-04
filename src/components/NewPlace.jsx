@@ -75,38 +75,31 @@ const NewPlace = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("city", city);
-      formData.append("checkin", checkin);
-      formData.append("checkout", checkout);
-      formData.append("guests", guests);
-      formData.append("price", price);
-      formData.append("description", description);
-      formData.append("extras", extras || "");
-      formData.append("perks", JSON.stringify(perks));
-
-      // Supondo que PhotoUploader passe os arquivos reais (ajuste o componente se necessário)
-      photos.forEach((file) => {
-        formData.append("files", file);
-      });
+      const payload = {
+        title,
+        city,
+        checkin,
+        checkout,
+        guests,
+        price,
+        description,
+        extras,
+        perks,
+        photos, // aqui, o array de URLs das fotos
+      };
 
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, formData, {
+        await api.put(`${apiBaseUrl}/places/${id}`, payload, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
-          withCredentials: true,
         });
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        await api.post(`${apiBaseUrl}/places`, formData, {
+        await api.post(`${apiBaseUrl}/places`, payload, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
-          withCredentials: true,
         });
         toast.success("Anúncio criado com sucesso!");
       }
