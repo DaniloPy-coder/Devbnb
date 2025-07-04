@@ -97,6 +97,18 @@ const NewPlace = () => {
         });
         toast.success("Anúncio atualizado com sucesso!");
       } else {
+        console.log({
+          title,
+          city,
+          photos,
+          description,
+          price,
+          checkin,
+          checkout,
+          guests,
+          extras,
+          perks,
+        });
         await api.post(`${apiBaseUrl}/places`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
