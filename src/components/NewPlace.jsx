@@ -34,6 +34,7 @@ const NewPlace = () => {
               Authorization: `Bearer ${user.token}`,
             },
           });
+          console.log("DADOS DO BACKEND:", data);
           setTitle(data.title || "");
           setCity(data.city || "");
           setPhotos(() => {
@@ -91,7 +92,6 @@ const NewPlace = () => {
 
     try {
       if (id) {
-        // Atualizar — envio como JSON puro
         await api.put(
           `${apiBaseUrl}/places/${id}`,
           {

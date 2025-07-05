@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 
 const PhotoUploader = ({ photos, setPhotos, token }) => {
+  console.log("PHOTOS NO PHOTOUPLOADER:", photos);
   const handleFileChange = async (e) => {
     if (!token) {
       toast.error("Você precisa estar logado para fazer upload de fotos.");
