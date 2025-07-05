@@ -2,18 +2,30 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NewPlace from "./NewPlace";
 import { api } from "../services/api";
+import { useUserContext } from "../contexts/UserContext";
 
 const AccPlaces = () => {
   const { action } = useParams();
+  const { user } = useUserContext();
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     const axiosGet = async () => {
-      const { data } = await api.get("/user/places");
-      setPlaces(data);
+      if (!user?.token) return;
+
+      try {
+        const { data } = await api.get("/user/places", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        setPlaces(data);
+      } catch (error) {
+        console.error("Erro ao buscar lugares:", error);
+      }
     };
     axiosGet();
-  }, [action]);
+  }, [action, user?.token]);
 
   return (
     <div className="flex w-full max-w-7xl flex-col items-center">
