@@ -96,37 +96,34 @@ const PhotoUploader = ({ photos, setPhotos, token }) => {
         </label>
 
         {photos
+          .map((p) => (typeof p === "string" ? p : p?.url))
           .filter((url) => typeof url === "string" && url)
-          .map((url, idx) => {
-            const src = url;
-
-            return (
-              <div
-                key={url + idx}
-                className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
-              >
-                <img
-                  src={src}
-                  alt={`Foto ${idx}`}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute right-2 bottom-2 flex gap-1">
-                  <div
-                    onClick={() => promotePhoto(idx)}
-                    className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
-                  >
-                    ⭐
-                  </div>
-                  <div
-                    onClick={() => deletePhoto(idx)}
-                    className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
-                  >
-                    ❌
-                  </div>
+          .map((src, idx) => (
+            <div
+              key={src + idx}
+              className="relative aspect-square overflow-hidden rounded-2xl border border-gray-300"
+            >
+              <img
+                src={src}
+                alt={`Foto ${idx}`}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute right-2 bottom-2 flex gap-1">
+                <div
+                  onClick={() => promotePhoto(idx)}
+                  className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
+                >
+                  ⭐
+                </div>
+                <div
+                  onClick={() => deletePhoto(idx)}
+                  className="hover:bg-primary-400 cursor-pointer rounded-full bg-gray-100 p-2 opacity-75 hover:text-white"
+                >
+                  ❌
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
       </div>
     </div>
   );
