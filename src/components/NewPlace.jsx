@@ -36,7 +36,21 @@ const NewPlace = () => {
           });
           setTitle(data.title || "");
           setCity(data.city || "");
-          setPhotos(data.photos || []);
+          setPhotos(() => {
+            if (!data.photos) return [];
+            if (typeof data.photos === "string") {
+              try {
+                const parsed = JSON.parse(data.photos);
+                return Array.isArray(parsed) ? parsed : [];
+              } catch {
+                return [];
+              }
+            }
+            if (Array.isArray(data.photos)) {
+              return data.photos.filter((p) => typeof p === "string");
+            }
+            return [];
+          });
           setDescription(data.description || "");
           setPerks(
             Array.isArray(data.perks)
