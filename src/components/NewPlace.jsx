@@ -105,6 +105,7 @@ const NewPlace = () => {
             extras,
             perks,
             photos,
+            oldPhotos: photos.filter((p) => typeof p === "string"),
           },
           {
             headers: {
