@@ -47,10 +47,11 @@ const NewPlace = () => {
               }
             }
             if (Array.isArray(data.photos)) {
-              return data.photos.filter((p) => typeof p === "string");
+              return data.photos;
             }
             return [];
           });
+
           setDescription(data.description || "");
           setPerks(
             Array.isArray(data.perks)
