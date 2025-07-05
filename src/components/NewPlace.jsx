@@ -89,7 +89,7 @@ const NewPlace = () => {
             description,
             extras,
             perks,
-            photos, // já é array, ok!
+            photos,
           },
           {
             headers: {
@@ -100,7 +100,6 @@ const NewPlace = () => {
         );
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        // Criar — precisa de FormData se tiver arquivos
         const formData = new FormData();
         formData.append("title", title);
         formData.append("city", city);
