@@ -75,40 +75,51 @@ const NewPlace = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("city", city);
-      formData.append("checkin", checkin);
-      formData.append("checkout", checkout);
-      formData.append("guests", guests);
-      formData.append("price", price);
-      formData.append("description", description);
-      formData.append("extras", extras || "");
-      formData.append("perks", JSON.stringify(perks));
-      formData.append("photos", JSON.stringify(photos)); // <== aqui enviando URLs serializadas
-
       if (id) {
-        await api.put(`${apiBaseUrl}/places/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${user.token}`,
+        // Atualizar — envio como JSON puro
+        await api.put(
+          `${apiBaseUrl}/places/${id}`,
+          {
+            title,
+            city,
+            checkin,
+            checkout,
+            guests,
+            price,
+            description,
+            extras,
+            perks,
+            photos, // já é array, ok!
           },
-          withCredentials: true,
-        });
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            withCredentials: true,
+          },
+        );
         toast.success("Anúncio atualizado com sucesso!");
       } else {
-        console.log({
-          title,
-          city,
-          photos,
-          description,
-          price,
-          checkin,
-          checkout,
-          guests,
-          extras,
-          perks,
+        // Criar — precisa de FormData se tiver arquivos
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("city", city);
+        formData.append("checkin", checkin);
+        formData.append("checkout", checkout);
+        formData.append("guests", guests);
+        formData.append("price", price);
+        formData.append("description", description);
+        formData.append("extras", extras || "");
+        formData.append("perks", JSON.stringify(perks));
+
+        photos.forEach((fileOrUrl) => {
+          if (typeof fileOrUrl === "string") {
+            formData.append("photos", fileOrUrl);
+          } else {
+            formData.append("files", fileOrUrl);
+          }
         });
+
         await api.post(`${apiBaseUrl}/places`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
