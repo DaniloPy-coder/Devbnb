@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 
 const Register = () => {
-  const { setUser } = useUserContext();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,15 +24,7 @@ const Register = () => {
           password,
         });
 
-        const { data: loginData } = await api.post(`${apiBaseUrl}/login`, {
-          email,
-          password,
-        });
-
-        localStorage.setItem("token", loginData.token);
-
-        setUser(loginData.user);
-
+        toast.success("Cadastro realizado com sucesso! Faça o login.");
         navigate("/login");
       } catch (error) {
         console.error("Erro na requisição:", error.response);
