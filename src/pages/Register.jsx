@@ -35,7 +35,7 @@ const Register = () => {
 
         setUser(loginData.user);
 
-        navigate("/");
+        navigate("/login");
       } catch (error) {
         console.error("Erro na requisição:", error.response);
         toast.error(error.response?.data?.message || "Erro no cadastro");
