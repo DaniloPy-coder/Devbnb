@@ -45,15 +45,19 @@ const Place = () => {
 
   useEffect(() => {
     if (id) {
+      console.log("Buscando o lugar com id:", id);
       const fetchPlace = async () => {
         try {
           const { data } = await api.get(`/places/${id}`);
+          console.log("Dados do lugar:", data);
           setPlace(data);
         } catch (error) {
           console.error("Erro ao buscar lugar:", error);
         }
       };
       fetchPlace();
+    } else {
+      console.log("ID do lugar não encontrado.");
     }
   }, [id]);
 
