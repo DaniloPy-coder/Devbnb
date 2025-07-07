@@ -11,9 +11,7 @@ const AccBookings = () => {
     if (!user) return;
     const apiGet = async () => {
       try {
-        const { data } = await api.get(
-          `http://localhost:3333/bookings/user/${user.id}`,
-        );
+        const { data } = await api.get(`/bookings/user/${user.id}`);
         setBookings(data);
       } catch (error) {
         console.error("Erro ao buscar reservas:", error);
