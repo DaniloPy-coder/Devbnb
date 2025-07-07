@@ -20,16 +20,24 @@ const Register = () => {
 
     if (name && email && password) {
       try {
-        const { data } = await api.post(`${apiBaseUrl}/users`, {
+        await api.post(`${apiBaseUrl}/users`, {
           name,
           email,
           password,
         });
 
-        setUser(data.user);
+        const { data: loginData } = await api.post(`${apiBaseUrl}/login`, {
+          email,
+          password,
+        });
+
+        localStorage.setItem("token", loginData.token);
+
+        setUser(loginData.user);
+
         navigate("/");
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response?.data?.message || "Erro no cadastro");
       }
     } else {
       toast.error("Preencha todos os campos");
