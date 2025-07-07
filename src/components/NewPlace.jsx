@@ -250,7 +250,7 @@ const NewPlace = () => {
             </label>
             <input
               type="text"
-              placeholder="500"
+              placeholder="13:00"
               id="checkin"
               className="rounded-full border-gray-300 px-4 py-2"
               value={checkin}

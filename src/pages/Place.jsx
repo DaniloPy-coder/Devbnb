@@ -123,7 +123,7 @@ const Place = () => {
 
     try {
       await api.delete(`/bookings/${booking.id}`);
-      alert("Reserva cancelada com sucesso.");
+      toast.success("Reserva cancelada com sucesso.");
       setBooking(null);
       setAlreadyBooked(false);
     } catch (err) {
