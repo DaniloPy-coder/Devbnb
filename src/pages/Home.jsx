@@ -14,7 +14,6 @@ const Home = () => {
     const apiGet = async () => {
       try {
         const { data } = await api.get(`${apiBaseUrl}/places`);
-        console.log("Places recebidos:", data);
         setPlaces(data);
       } catch (error) {
         toast.error(error.response.data.message);

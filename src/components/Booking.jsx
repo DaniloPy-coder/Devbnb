@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 
 const Booking = ({ booking, place = false, onCancel = null }) => {
+  const firstPhoto = booking.place.photos?.[0];
+
+  const photoUrl = firstPhoto
+    ? firstPhoto.startsWith("http")
+      ? firstPhoto
+      : `https://https://backend-devbnb.vercel.app/files/${firstPhoto}`
+    : "/placeholder.jpg";
+
   return (
     <div
       className={`flex w-full flex-col gap-4 rounded-2xl bg-gray-100 p-6 ${
@@ -13,14 +21,8 @@ const Booking = ({ booking, place = false, onCancel = null }) => {
         <Link to={`/place/${booking.place.id}`} className="block">
           <img
             className="aspect-square max-w-56 rounded-2xl bg-gray-100 p-6"
-            src={
-              booking.place.photos && booking.place.photos[0]
-                ? booking.place.photos[0].startsWith("http")
-                  ? booking.place.photos[0]
-                  : `/files/${booking.place.photos[0]}`
-                : "/placeholder.jpg"
-            }
-            alt="Foto da Acomodação"
+            src={photoUrl}
+            alt={booking.place.title || "Foto do lugar"}
           />
         </Link>
       )}
