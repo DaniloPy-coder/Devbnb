@@ -128,11 +128,7 @@ const NewPlace = () => {
         formData.append("perks", JSON.stringify(perks));
 
         photos.forEach((fileOrUrl) => {
-          if (typeof fileOrUrl === "string") {
-            formData.append("photos", fileOrUrl);
-          } else {
-            formData.append("files", fileOrUrl);
-          }
+          formData.append("photos", fileOrUrl);
         });
 
         await api.post(`${apiBaseUrl}/places`, formData, {
